@@ -2,3 +2,4 @@
 .DS_STORE
 debug.txt
 .vscode
+.rspec_status

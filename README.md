@@ -29,6 +29,13 @@ Then, you can open the browser and check
 http://localhost:9292
 http://localhost:9292/api/sample
 
+## Running tests
+
+The project uses rspec as testing library
+
+````
+bundle exec rspec spec
+````
 
 ## Working with Rake for command line utils
 

@@ -37,6 +37,7 @@ group :development do
   gem 'database_cleaner-data_mapper'
   gem 'timecop'
   gem 'dm-rspec'
+  gem 'webmock' # Para simular peticiones HTTP en tests
   gem 'sqlite3', '2.4.1'
   gem 'dm-sqlite-adapter', git: "https://github.com/mybooking-es/dm-sqlite-adapter"
   gem "do_sqlite3","0.10.17", git: 'https://github.com/mybooking-es/do_sqlite3'
