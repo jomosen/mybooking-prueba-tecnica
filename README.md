@@ -5,6 +5,10 @@
 - Ruby 3.3.0
 - MySQL or MariaDB
 
+## Database
+
+The file prueba_tecnica.sql is a dump of the db to be used.
+
 ## Preparing the environment
 ```
 bundle install
