@@ -1,6 +1,9 @@
-# Prueba técnica Mybooking
+# Mybooking - Interview test
 
+## Prerequesites
 
+- Ruby 3.3.0
+- MySQL or MariaDB
 
 ## Preparing the environment
 ```
