@@ -20,7 +20,7 @@
       <div class="container">
         <div class="row">
           <form class="row g-3">
-            <div class="col-md-3">
+            <div class="col-md-2">
               <label for="rental_location" class="form-label">Sucursal</label>
               <select name="rental_location" class="form-select">
                 <option value="">Seleccione una sucursal</option>
@@ -54,6 +54,16 @@
               </select>
             </div>
             <div class="col-md-2">
+              <label for="season_id" class="form-label">Duración</label>
+              <select name="season_id" class="form-select">
+                <option value="">Seleccione la unidad</option>
+                <option value="month">Meses</option>
+                <option value="days">Días</option>
+                <option value="hours">Horas</option>
+                <option value="minutes">Minutos</option>
+              </select>
+            </div>
+            <div class="col-md-1">
               <button class="btn btn-primary w-100" style="margin-top: 32px;">Filtrar</button>
             </div>
           </form>

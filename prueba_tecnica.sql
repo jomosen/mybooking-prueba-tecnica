@@ -27,7 +27,7 @@ CREATE TABLE `categories` (
   `code` varchar(20) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,18 +36,18 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'A','Scooter 125cc'),(2,'B','Turismo'),(3,'C','Furgoneta');
+INSERT INTO `categories` VALUES (1,'A','Scooter 125cc'),(2,'B','Turismo'),(3,'C','Furgoneta'),(4,'A1','Scooter 300cc');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `category_rental_location_rate_type`
+-- Table structure for table `category_rental_location_rate_types`
 --
 
-DROP TABLE IF EXISTS `category_rental_location_rate_type`;
+DROP TABLE IF EXISTS `category_rental_location_rate_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `category_rental_location_rate_type` (
+CREATE TABLE `category_rental_location_rate_types` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) DEFAULT NULL,
   `rental_location_id` bigint(20) DEFAULT NULL,
@@ -58,53 +58,23 @@ CREATE TABLE `category_rental_location_rate_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category_rental_location_rate_type`
+-- Dumping data for table `category_rental_location_rate_types`
 --
 
-LOCK TABLES `category_rental_location_rate_type` WRITE;
-/*!40000 ALTER TABLE `category_rental_location_rate_type` DISABLE KEYS */;
-INSERT INTO `category_rental_location_rate_type` VALUES (1,1,1,1,1),(2,2,1,1,2),(3,3,1,1,3),(4,1,2,1,4),(5,2,2,1,5),(6,3,2,1,6);
-/*!40000 ALTER TABLE `category_rental_location_rate_type` ENABLE KEYS */;
+LOCK TABLES `category_rental_location_rate_types` WRITE;
+/*!40000 ALTER TABLE `category_rental_location_rate_types` DISABLE KEYS */;
+INSERT INTO `category_rental_location_rate_types` VALUES (1,1,1,1,1),(2,2,1,1,2),(3,3,1,1,3),(4,1,2,1,4),(5,2,2,1,5),(6,3,2,1,6);
+/*!40000 ALTER TABLE `category_rental_location_rate_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `price`
+-- Table structure for table `price_definitions`
 --
 
-DROP TABLE IF EXISTS `price`;
+DROP TABLE IF EXISTS `price_definitions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `price` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `price_definition_id` bigint(20) DEFAULT NULL,
-  `season_id` bigint(20) DEFAULT NULL,
-  `time_measurement` int(11) DEFAULT NULL,
-  `units` int(11) DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
-  `included_km` int(11) DEFAULT NULL,
-  `extra_km_price` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `price`
---
-
-LOCK TABLES `price` WRITE;
-/*!40000 ALTER TABLE `price` DISABLE KEYS */;
-INSERT INTO `price` VALUES (1,1,1,2,1,60.00,0,0.00),(2,1,1,2,2,55.00,0,0.00),(3,1,1,2,4,45.00,0,0.00),(4,1,1,2,15,40.00,0,0.00),(5,1,2,2,1,50.00,0,0.00),(6,1,2,2,2,40.00,0,0.00),(7,1,2,2,4,35.00,0,0.00),(8,1,2,2,15,30.00,0,0.00),(9,1,3,2,1,40.00,0,0.00),(10,1,3,2,2,35.00,0,0.00),(11,1,3,2,4,30.00,0,0.00),(12,1,3,2,15,25.00,0,0.00),(13,2,4,2,1,90.00,0,0.00),(14,2,4,2,2,80.00,0,0.00),(15,2,4,2,4,75.00,0,0.00),(16,2,4,2,8,70.00,0,0.00),(17,2,4,2,15,60.00,0,0.00),(18,2,4,2,30,50.00,0,0.00),(19,2,5,2,1,70.00,0,0.00),(20,2,5,2,2,65.00,0,0.00),(21,2,5,2,4,60.00,0,0.00),(22,2,5,2,8,50.00,0,0.00),(23,2,5,2,15,45.00,0,0.00),(24,2,5,2,30,40.00,0,0.00),(25,3,NULL,2,1,110.00,0,0.00),(26,4,1,2,1,70.00,0,0.00),(27,4,1,2,2,65.00,0,0.00),(28,4,1,2,4,55.00,0,0.00),(29,4,1,2,15,50.00,0,0.00),(30,4,2,2,1,60.00,0,0.00),(31,4,2,2,2,50.00,0,0.00),(32,4,2,2,4,45.00,0,0.00),(33,4,2,2,15,40.00,0,0.00),(34,4,3,2,1,50.00,0,0.00),(35,4,3,2,2,45.00,0,0.00),(36,4,3,2,4,40.00,0,0.00),(37,4,3,2,15,35.00,0,0.00),(38,5,4,2,1,100.00,0,0.00),(39,5,4,2,2,90.00,0,0.00),(40,5,4,2,4,85.00,0,0.00),(41,5,4,2,8,80.00,0,0.00),(42,5,4,2,15,70.00,0,0.00),(43,5,4,2,30,60.00,0,0.00),(44,5,5,2,1,80.00,0,0.00),(45,5,5,2,2,75.00,0,0.00),(46,5,5,2,4,70.00,0,0.00),(47,5,5,2,8,60.00,0,0.00),(48,5,5,2,15,55.00,0,0.00),(49,5,5,2,30,50.00,0,0.00),(50,6,NULL,2,1,120.00,0,0.00);
-/*!40000 ALTER TABLE `price` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `price_definition`
---
-
-DROP TABLE IF EXISTS `price_definition`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `price_definition` (
+CREATE TABLE `price_definitions` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
@@ -127,17 +97,47 @@ CREATE TABLE `price_definition` (
   `units_value_limit_min_hours` int(11) DEFAULT NULL,
   `apply_price_by_kms` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `price_definition`
+-- Dumping data for table `price_definitions`
 --
 
-LOCK TABLES `price_definition` WRITE;
-/*!40000 ALTER TABLE `price_definition` DISABLE KEYS */;
-INSERT INTO `price_definition` VALUES (1,'A - Barcelona - Estándar',1,1,1,1500.00,400.00,0,1,0,0,1,1,1,'1','1,2,4,15','1','1',5,60,NULL),(2,'B - Barcelona - Estándar',1,1,1,2100.00,500.00,0,1,0,0,1,1,1,'1','1,2,4,8,15,30','1','1',5,60,NULL),(3,'C - Barcelona - Estándar',2,1,NULL,2400.00,550.00,0,1,0,0,1,1,1,'1','1','1','1',5,60,NULL),(4,'A - Menorca - Estándar',1,1,1,1500.00,400.00,0,1,0,0,1,1,1,'1','1,2,4,15','1','1',5,60,NULL),(5,'B - Menorca - Estándar',1,1,1,2100.00,500.00,0,1,0,0,1,1,1,'1','1,2,4,8,15,30','1','1',5,60,NULL),(6,'C - Menorca - Estándar',2,1,NULL,2400.00,550.00,0,1,0,0,1,1,1,'1','1','1','1',5,60,NULL);
-/*!40000 ALTER TABLE `price_definition` ENABLE KEYS */;
+LOCK TABLES `price_definitions` WRITE;
+/*!40000 ALTER TABLE `price_definitions` DISABLE KEYS */;
+INSERT INTO `price_definitions` VALUES (1,'A - Barcelona - Estándar',1,1,1,1500.00,400.00,0,1,0,0,1,1,1,'1','1,2,4,15','1','1',5,60,NULL),(2,'B - Barcelona - Estándar',1,1,2,2100.00,500.00,0,1,0,0,1,1,1,'1','1,2,4,8,15,30','1','1',5,60,NULL),(3,'C - Barcelona - Estándar',2,1,NULL,2400.00,550.00,0,1,0,0,1,1,1,'1','1','1','1',5,60,NULL),(4,'A - Menorca - Estándar',1,1,1,1500.00,400.00,0,1,0,0,1,1,1,'1','1,2,4,15','1','1',5,60,NULL),(5,'B - Menorca - Estándar',1,1,2,2100.00,500.00,0,1,0,0,1,1,1,'1','1,2,4,8,15,30','1','1',5,60,NULL),(6,'C - Menorca - Estándar',2,1,NULL,2400.00,550.00,0,1,0,0,1,1,1,'1','1','1','1',5,60,NULL),(7,'A1 - Barcelona - Estándar',1,1,1,1500.00,400.00,0,1,0,0,1,1,1,'1','1,2,4,8,15,30','1','1',5,60,NULL);
+/*!40000 ALTER TABLE `price_definitions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `prices`
+--
+
+DROP TABLE IF EXISTS `prices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prices` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `price_definition_id` bigint(20) DEFAULT NULL,
+  `season_id` bigint(20) DEFAULT NULL,
+  `time_measurement` int(11) DEFAULT NULL,
+  `units` int(11) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `included_km` int(11) DEFAULT NULL,
+  `extra_km_price` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prices`
+--
+
+LOCK TABLES `prices` WRITE;
+/*!40000 ALTER TABLE `prices` DISABLE KEYS */;
+INSERT INTO `prices` VALUES (1,1,1,2,1,60.00,0,0.00),(2,1,1,2,2,55.00,0,0.00),(3,1,1,2,4,45.00,0,0.00),(4,1,1,2,15,40.00,0,0.00),(5,1,2,2,1,50.00,0,0.00),(6,1,2,2,2,40.00,0,0.00),(7,1,2,2,4,35.00,0,0.00),(8,1,2,2,15,30.00,0,0.00),(9,1,3,2,1,40.00,0,0.00),(10,1,3,2,2,35.00,0,0.00),(11,1,3,2,4,30.00,0,0.00),(12,1,3,2,15,25.00,0,0.00),(13,2,4,2,1,90.00,0,0.00),(14,2,4,2,2,80.00,0,0.00),(15,2,4,2,4,75.00,0,0.00),(16,2,4,2,8,70.00,0,0.00),(17,2,4,2,15,60.00,0,0.00),(18,2,4,2,30,50.00,0,0.00),(19,2,5,2,1,70.00,0,0.00),(20,2,5,2,2,65.00,0,0.00),(21,2,5,2,4,60.00,0,0.00),(22,2,5,2,8,50.00,0,0.00),(23,2,5,2,15,45.00,0,0.00),(24,2,5,2,30,40.00,0,0.00),(25,3,NULL,2,1,110.00,0,0.00),(26,4,1,2,1,70.00,0,0.00),(27,4,1,2,2,65.00,0,0.00),(28,4,1,2,4,55.00,0,0.00),(29,4,1,2,15,50.00,0,0.00),(30,4,2,2,1,60.00,0,0.00),(31,4,2,2,2,50.00,0,0.00),(32,4,2,2,4,45.00,0,0.00),(33,4,2,2,15,40.00,0,0.00),(34,4,3,2,1,50.00,0,0.00),(35,4,3,2,2,45.00,0,0.00),(36,4,3,2,4,40.00,0,0.00),(37,4,3,2,15,35.00,0,0.00),(38,5,4,2,1,100.00,0,0.00),(39,5,4,2,2,90.00,0,0.00),(40,5,4,2,4,85.00,0,0.00),(41,5,4,2,8,80.00,0,0.00),(42,5,4,2,15,70.00,0,0.00),(43,5,4,2,30,60.00,0,0.00),(44,5,5,2,1,80.00,0,0.00),(45,5,5,2,2,75.00,0,0.00),(46,5,5,2,4,70.00,0,0.00),(47,5,5,2,8,60.00,0,0.00),(48,5,5,2,15,55.00,0,0.00),(49,5,5,2,30,50.00,0,0.00),(50,6,NULL,2,1,120.00,0,0.00),(51,7,1,2,1,50.00,0,0.00),(52,7,1,2,2,45.00,0,0.00),(53,7,1,2,4,40.00,0,0.00),(54,7,1,2,8,35.00,0,0.00),(55,7,1,2,15,30.00,0,0.00),(56,7,1,2,30,25.00,0,0.00),(57,7,2,2,1,40.00,0,0.00),(58,7,2,2,2,35.00,0,0.00),(59,7,2,2,4,30.00,0,0.00),(60,7,2,2,8,25.00,0,0.00),(61,7,2,2,15,20.00,0,0.00),(62,7,2,2,30,15.00,0,0.00),(63,7,3,2,1,35.00,0,0.00),(64,7,3,2,2,30.00,0,0.00),(65,7,3,2,4,25.00,0,0.00),(66,7,3,2,8,20.00,0,0.00),(67,7,3,2,15,15.00,0,0.00),(68,7,3,2,30,10.00,0,0.00);
+/*!40000 ALTER TABLE `prices` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -300,4 +300,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-22 20:58:54
+-- Dump completed on 2025-08-22 23:00:10

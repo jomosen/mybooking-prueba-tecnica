@@ -3,18 +3,18 @@ module UseCase
     #
     # Sample use case to demonstrate the structure of Injection of Dependencies
     #
-    class SampleUseCase
+    class SampleServiceUseCase
 
       Result = Struct.new(:success?, :authorized?, :data, :message, keyword_init: true)
 
       #
       # Initialize the use case
       #
-      # @param [Repository::CategoryRepository] category_repository
+      # @param [Service::ListPricesService] list_prices_service
       # @param [Logger] logger
       #
-      def initialize(category_repository, logger)
-        @category_repository = category_repository
+      def initialize(list_prices_service, logger)
+        @list_prices_service = list_prices_service
         @logger = logger
       end
 
@@ -41,7 +41,7 @@ module UseCase
         end
 
         data = self.load_data
-        @logger.debug "SampleUseCase - execute - data: #{data.inspect}"
+        @logger.debug "SampleServiceUseCase - execute - data: #{data.inspect}"
 
         # Return the result
         return Result.new(success?: true, authorized?: true, data: data)
@@ -52,7 +52,7 @@ module UseCase
 
       def load_data
 
-        @category_repository.first(conditions: {code: 'A'})
+        @list_prices_service.retrieve
 
       end
 
