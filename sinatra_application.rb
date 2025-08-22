@@ -12,25 +12,5 @@ module Sinatra
     # Include the routes defined in the controller
     register Sinatra::AutoRegister
 
-    #
-    # Home page sample
-    #
-    get '/' do
-
-      use_case = PageUseCase::Home::PageHomeUseCase.new(logger)
-      result = use_case.perform(params)
-
-      @title = "Home page"
-
-      if result.success?
-        @message = result.data
-        erb :index
-      else
-        @message = result.message
-        erb :error_page
-      end
-
-    end
-
   end
 end
