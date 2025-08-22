@@ -7,6 +7,7 @@ module Model
      belongs_to :category, 'Model::Category', required: true
      belongs_to :rental_location, 'Model::RentalLocation', required: true
      belongs_to :rate_type, 'Model::RateType', required: true
+     belongs_to :price_definition, 'Model::PriceDefinition', required: true
 
   end
 end
