@@ -8,7 +8,7 @@ module Model
 
      property :id, Serial
      property :name, String, length: 255
-     property :type, Enum[:season, :season], default: :season
+     property :type, Enum[:season, :no_season], default: :season
 
      belongs_to :rate_type, 'Model::RateType', required: true
      belongs_to :season_definition, 'Model::SeasonDefinition', required: false
@@ -31,6 +31,8 @@ module Model
 
      property :units_value_limit_hours_day, Integer, default: 0 # hours considered measurement in days. 0 no limit
      property :units_value_limit_min_hours, Integer, default: 0 # minutes considered measurement in hours. 0 no limit
+
+     property :apply_price_by_kms, Boolean, default: false
 
   end
 end
