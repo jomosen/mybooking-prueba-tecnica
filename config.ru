@@ -19,6 +19,9 @@ run app
 # Prepare debug
 if File.exist?('debug.txt')
   ENV['RUBY_DEBUG_NONSTOP'] = '1'
-  ENV['RUBY_DEBUG_OPEN'] = "tcp://127.0.0.1:1234"
-  require 'debug'
+  ENV['RUBY_DEBUG_OPEN'] = 'tcp://127.0.0.1:1235'
+  ENV['RUBY_DEBUG_HOST'] = '127.0.0.1'
+  ENV['RUBY_DEBUG_PORT'] = '1235'
+  ENV['RUBY_DEBUG_USE_SOCKET'] = 'tcp'
+  require 'debug/open_nonstop'
 end

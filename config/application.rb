@@ -22,8 +22,12 @@ DataMapper.setup(:default, ENV['DATABASE_URL'])
 DataMapper::Model.raise_on_save_failure = true
 DataMapper.finalize
 
-
+# Active support
 require 'active_support'
 require 'active_support/time'
 require 'active_support/core_ext'
 ENV['TZ'] = 'UTC'
+
+# Base classes
+require_relative '../lib/base_repository'
+require_relative '../lib/base_serializer'

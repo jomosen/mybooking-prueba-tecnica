@@ -42,7 +42,7 @@ module UseCase
 
         data = self.load_data
 
-        p "data:: #{data.inspect}"
+        @logger.debug "SampleUseCase - execute - data: #{data.inspect}"
 
         # Return the result
         return Result.new(success?: true, authorized?: true, data: data)
