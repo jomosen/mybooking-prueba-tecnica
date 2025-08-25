@@ -1,23 +1,20 @@
 # Tareas
 
-## Tarea 1
+## Introducción
 
-Implementar los servicios para poder mostrar los precios de múltiples productos en una única pantalla.
+El objetivo de esta prueba técnica es implementar 2 funcionalidades relacionadas con la gestión de tarifas en el contexto de nuestra herramienta, un SaaS vertical para la gestión de empresas de alquiler de vehículos.
 
-De entrada el usuario ha de seleccionar la sucursal. El resto de campos estarán desactivados y se irán activando
-a medida que se vayan seleccionado.
+El proyecto, te explicamos en el fichero README.md cómo levantarlo, es una aplicación Ruby Sinatra. Aunque no tengas experiencia en el lenguaje las tareas son muy específicas. Los objetivos de las mismas son:
 
-- Cuando se seleccione la sucursal se han de cargar los tipos de tarifas que se ofrecen en esa sucursal.
-- Cuando se seleccione el tipo de tarifa se cargarán los conjuntos de temporadas en función de los conjuntos de
-temporadas que pueden usarse en la sucursal y de los precios que haya definido.
-- Cuando se seleccione el conjunto de temporadas se cargarán las temporadas vinculadas. Se de poder seleccionar
-sin temporadas lo que implica que se cargarán aquellas categorías con precios sin temporadas.
-- Por último se podrá seleccionar la unidad : meses, días, horas y minutos. Los datos de prueba sólo contienen
-tarifas diarias.
- 
-![UI](./task_ui.png)
+- Ver cómo te mueves con nuestra arquitectura.
+- Ver cómo llevas a cabo una tarea pensada para una full stack
+- Ver cómo llevas a cabo un proceso de carga de datos. Tarea pensada para una desarrollador back.
+
+Para implementar estas tareas haz un fork de este repositorio e implementálo sobre tu fork. Lo revisaremos juntos.
 
 ### Modelo de datos
+
+Aquí te explicamos el modelo de datos, simplificado, de las categorías y las tarifas que es lo que usarás para la resolución de las tareas.
 
 ![Modelo de datos](./data_model.png)
 
@@ -76,6 +73,23 @@ empresa con múltiples sucursales no todas las categorías tienen porque comerci
 no para todos los tipos de tarifa. 
 CategoryRentalLocationRateType permite la relación entre las categorías, las sucursales dónde se comercializan y las 
 tarifas.
+
+## Tarea 1
+
+Implementar los servicios para poder mostrar los precios de múltiples productos en una única pantalla.
+
+De entrada el usuario ha de seleccionar la sucursal. El resto de campos estarán desactivados y se irán activando
+a medida que se vayan seleccionado.
+
+- Cuando se seleccione la sucursal se han de cargar los tipos de tarifas que se ofrecen en esa sucursal.
+- Cuando se seleccione el tipo de tarifa se cargarán los conjuntos de temporadas en función de los conjuntos de
+temporadas que pueden usarse en la sucursal y de los precios que haya definido.
+- Cuando se seleccione el conjunto de temporadas se cargarán las temporadas vinculadas. Se de poder seleccionar
+sin temporadas lo que implica que se cargarán aquellas categorías con precios sin temporadas.
+- Por último se podrá seleccionar la unidad : meses, días, horas y minutos. Los datos de prueba sólo contienen
+tarifas diarias.
+ 
+![UI](./task_ui.png)
 
 ### Más detalles
 
