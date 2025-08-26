@@ -92,12 +92,55 @@
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    
     <script>
+
+      async function loadRateTypes(rental_location_id) {
+        try {
+            const res = await fetch(`/api/rental-locations/${rental_location_id}/rate-types`);
+            if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
+            const data = await res.json();
+
+            select_selector = 'select[name="rate_type"]';
+            resetSelect(select_selector);
+
+            if (!Array.isArray(data) || data.length === 0) return;
+
+            fillSelect(select_selector, data);
+
+          } catch (err) {
+            console.error(err);
+          }
+      }
+
+      function resetSelect(select_selector) {
+        // Mantiene solo la opción con value=""
+        $(select_selector + ' option').not('[value=""]').remove();
+      }
+
+      function fillSelect(select_selector, options) {
+        const $select = $(select_selector);
+
+        options.forEach(opt => {
+          $select.append(
+            $('<option>', { value: opt.id, text: opt.name })
+          );
+        });
+
+        $select.trigger('change');
+      }
+
       $(document).ready(function() {
+
         $('select[name="rental_location"]').select2({
           theme: 'bootstrap-5'
         });
+
+        $('select[name="rental_location"]').change(function () {
+          rental_location_id = $(this).val();
+          loadRateTypes(rental_location_id);
+        });
+
         $('select[name="rate_type"]').select2({
           theme: 'bootstrap-5'
         });
