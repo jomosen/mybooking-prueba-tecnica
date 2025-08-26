@@ -9,10 +9,13 @@ module Controller
         #
         app.get '/' do
 
-          use_case = PageUseCase::Home::PageHomeUseCase.new(logger)
+          use_case = PageUseCase::Home::PageHomeUseCase.new(
+            Repository::RentalLocationRepository.new,
+            logger)
           result = use_case.perform(params)
 
           @title = "Home page"
+          @rental_locations = result.data
 
           if result.success?
             @message = result.data

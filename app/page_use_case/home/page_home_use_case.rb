@@ -12,7 +12,8 @@ module PageUseCase
       #
       # @param [Logger] logger
       #
-      def initialize(logger)
+      def initialize(rental_location_repository, logger)
+        @rental_location_repository = rental_location_repository
         @logger = logger
       end
 
@@ -38,12 +39,19 @@ module PageUseCase
           return Result.new(success?: true, authorized?: false, message: 'Not authorized')
         end
 
+        data = self.load_data
+        @logger.debug "PageHomeUseCase - execute - data: #{data.inspect}"
+
         # Return the result
-        return Result.new(success?: true, authorized?: true, data: "Hola Mundo!")
+        return Result.new(success?: true, authorized?: true, data: data)
 
       end
 
       private
+
+      def load_data
+        @rental_location_repository.find_all(order: [:name.asc])
+      end
 
       #
       # Process the parameters
