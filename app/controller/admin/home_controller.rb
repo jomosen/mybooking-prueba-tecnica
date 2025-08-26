@@ -9,9 +9,8 @@ module Controller
         #
         app.get '/' do
 
-          use_case = PageUseCase::Home::PageHomeUseCase.new(
-            Repository::RentalLocationRepository.new,
-            logger)
+          rental_location_repository = Repository::RentalLocationRepository.new
+          use_case = PageUseCase::Home::PageHomeUseCase.new(rental_location_repository, logger)
           result = use_case.perform(params)
 
           @title = "Home page"
