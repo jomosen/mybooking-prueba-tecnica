@@ -1,0 +1,76 @@
+services:
+  db:
+    image: mariadb:11
+    container_name: mybooking_db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
+      MARIADB_DATABASE: ${DB_NAME:-prueba_tecnica}   # el entrypoint importará el dump en esta DB
+      MARIADB_USER: ${DB_USER:-app}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-app_pass}
+    ports:
+      - "3309:3306"   # opcional, solo si quieres conectar desde host
+    volumes:
+      - db_data:/var/lib/mysql
+      # 01) importa el dump inicial en la DB principal (el entrypoint lo ejecuta automáticamente)
+      - ./prueba_tecnica.sql:/docker-entrypoint-initdb.d/01-prueba_tecnica.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -u${DB_USER:-app} -p${DB_PASSWORD:-app_pass} --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RUBY_VERSION: "3.3.0"
+    container_name: mybooking_app
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      # asegura binding y entorno (además de lo del .env)
+      RACK_ENV: ${RACK_ENV:-development}
+      # Precargar Bundler evita el choque con 'pp'
+      RUBYOPT: "-rbundler/setup"
+      BUNDLE_GEMFILE: "/app/Gemfile"
+      # Asegura PATH a binarios de gems
+      PATH: "/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      # rdbg → rackup (ruta absoluta). Sin bundle exec.
+    ports:
+      - "9292:9292"
+      - "1235:1235"
+    volumes:
+      - .:/app:cached
+    command:
+      - rdbg
+      - -n
+      - -O
+      - --open
+      - --stop-at-load
+      - --host
+      - 0.0.0.0
+      - --port
+      - "1235"
+      - --
+      - /usr/local/bundle/ruby/3.3.0/bin/rackup
+      - -o
+      - 0.0.0.0
+      - -p
+      - "9292"
+
+  # opcional: Adminer para gestionar MariaDB en http://localhost:8080
+  adminer:
+    image: adminer:latest
+    container_name: mybooking_adminer
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
