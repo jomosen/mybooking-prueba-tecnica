@@ -46,8 +46,8 @@ module UseCase
     #
     def process_params(params)
 
-      # Integer(params[:rate_type_id]) rescue return { valid: false, authorized: true, message: 'invalid rate_type_id' }
-      # Integer(params[:rental_location_id]) rescue return { valid: false, authorized: true, message: 'invalid rental_location_id' }
+      Integer(params[:rate_type_id]) rescue return { valid: false, authorized: true, message: 'invalid rate_type_id' }
+      Integer(params[:rental_location_id]) rescue return { valid: false, authorized: true, message: 'invalid rental_location_id' }
 
       return { valid: true, authorized: true }
 
