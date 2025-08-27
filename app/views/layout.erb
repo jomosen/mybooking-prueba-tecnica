@@ -110,6 +110,15 @@
         return;
       }
 
+      function loadSeasons(season_definition_id, rate_type_id, rental_location_id) {
+        endpoint = `/api/season-definitions/${season_definition_id}/seasons?rental_location_id=${rental_location_id}&rate_type_id=${rate_type_id}`;
+        select_selector = 'select[name="season_id"]';
+        if (season_definition_id && rate_type_id && rental_location_id) {
+          return reloadSelector(endpoint, select_selector);
+        }
+        return;
+      }
+
       async function reloadSelector(endpoint, select_selector) {
         try {
             const res = await fetch(endpoint);
@@ -178,6 +187,13 @@
           rate_type_id = $(this).val();
           rental_location_id = $('select[name="rental_location_id"]').val()
           loadSeasonDefinitions(rate_type_id, rental_location_id);
+        });
+
+        $('select[name="season_definition_id"]').change(function () {
+          season_definition_id = $(this).val();
+          rate_type_id = $('select[name="rate_type_id"]').val()
+          rental_location_id = $('select[name="rental_location_id"]').val()
+          loadSeasons(season_definition_id, rate_type_id, rental_location_id);
         });
 
       });
