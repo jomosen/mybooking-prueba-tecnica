@@ -22,8 +22,8 @@
         <div class="row">
           <form class="row g-3">
             <div class="col-md-2">
-              <label for="rental_location" class="form-label">Sucursal</label>
-              <select name="rental_location" class="form-select">
+              <label for="rental_location_id" class="form-label">Sucursal</label>
+              <select name="rental_location_id" class="form-select">
                 <option value="">Seleccione una sucursal</option>
                 <% @rental_locations.each do |rental_location| %>
                   <option value="<%= rental_location.id %>"><%= rental_location.name %></option>
@@ -31,8 +31,8 @@
               </select>
             </div>
             <div class="col-md-2">
-              <label for="rate_type" class="form-label">Tipo de tarifa</label>
-              <select name="rate_type" class="form-select">
+              <label for="rate_type_id" class="form-label">Tipo de tarifa</label>
+              <select name="rate_type_id" class="form-select">
                 <option value="">Seleccione un tipo de tarifa</option>
                 
               </select>
@@ -95,13 +95,27 @@
     
     <script>
 
-      async function loadRateTypes(rental_location_id) {
+      function loadRateTypes(rental_location_id) {
+        endpoint = `/api/rental-locations/${rental_location_id}/rate-types`;
+        select_selector = 'select[name="rate_type_id"]';
+        return reloadSelector(endpoint, select_selector);
+      }
+
+      function loadSeasonDefinitions(rate_type_id, rental_location_id) {
+        endpoint = `/api/rate-types/${rate_type_id}/season-definitions?rental_location_id=${rental_location_id}`;
+        select_selector = 'select[name="season_definition_id"]';
+        if (rate_type_id && rental_location_id) {
+          return reloadSelector(endpoint, select_selector);
+        }
+        return;
+      }
+
+      async function reloadSelector(endpoint, select_selector) {
         try {
-            const res = await fetch(`/api/rental-locations/${rental_location_id}/rate-types`);
+            const res = await fetch(endpoint);
             if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
             const data = await res.json();
 
-            select_selector = 'select[name="rate_type"]';
             resetSelect(select_selector);
 
             if (!Array.isArray(data) || data.length === 0) return;
@@ -111,6 +125,7 @@
           } catch (err) {
             console.error(err);
           }
+          return;
       }
 
       function resetSelect(select_selector) {
@@ -132,28 +147,37 @@
 
       $(document).ready(function() {
 
-        $('select[name="rental_location"]').select2({
+        $('select[name="rental_location_id"]').select2({
           theme: 'bootstrap-5'
         });
 
-        $('select[name="rental_location"]').change(function () {
-          rental_location_id = $(this).val();
-          loadRateTypes(rental_location_id);
-        });
-
-        $('select[name="rate_type"]').select2({
+        $('select[name="rate_type_id"]').select2({
           theme: 'bootstrap-5'
         });
+
         $('select[name="season_definition_id"]').select2({
           theme: 'bootstrap-5'
         });
+        
         $('select[name="season_id"]').select2({
           theme: 'bootstrap-5'
         });
+
         $('#prices_table').dataTable({
           paging: true,
           searching: false,
           info: true
+        });
+
+        $('select[name="rental_location_id"]').change(function () {
+          rental_location_id = $(this).val();
+          loadRateTypes(rental_location_id);
+        });
+
+        $('select[name="rate_type_id"]').change(function () {
+          rate_type_id = $(this).val();
+          rental_location_id = $('select[name="rental_location_id"]').val()
+          loadSeasonDefinitions(rate_type_id, rental_location_id);
         });
 
       });
