@@ -1,7 +1,7 @@
 module Service
   class ListRateTypesForRentalLocationService
 
-    def retrieve_by_rental_location(rental_location_id)
+    def retrieve(params)
 
       sql = <<-SQL
         SELECT DISTINCT rt.id, rt.name
@@ -11,7 +11,7 @@ module Service
         ORDER BY rt.name ASC
       SQL
 
-      Infraestructure::Query.run(sql, [rental_location_id])
+      Infraestructure::Query.run(sql, [params[:rental_location_id]])
 
     end
   end

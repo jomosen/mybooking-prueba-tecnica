@@ -4,8 +4,8 @@ module UseCase
 
     Result = Struct.new(:success?, :authorized?, :data, :message, keyword_init: true)
 
-    def initialize(list_rate_types_for_rental_location_service, logger)
-      @list_rate_types_for_rental_location_service = list_rate_types_for_rental_location_service
+    def initialize(service, logger)
+      @service = service
       @logger = logger
     end
 
@@ -35,7 +35,7 @@ module UseCase
 
     def load_data(params)
 
-      @list_rate_types_for_rental_location_service.retrieve_by_rental_location(params[:id])
+      @service.retrieve(params)
 
     end
 
@@ -45,6 +45,8 @@ module UseCase
     # @return [Hash]
     #
     def process_params(params)
+
+      # Integer(params[:rental_location_id]) rescue return { valid: false, authorized: true, message: 'invalid rental_location_id' }
 
       return { valid: true, authorized: true }
 
