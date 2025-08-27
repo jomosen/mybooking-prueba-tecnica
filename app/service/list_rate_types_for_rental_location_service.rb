@@ -8,10 +8,9 @@ module Service
         FROM category_rental_location_rate_types crlrt
         JOIN rate_types rt ON rt.id = crlrt.rate_type_id
         WHERE crlrt.rental_location_id = ?
-        ORDER BY rt.name ASC
       SQL
 
-      Infraestructure::Query.run(sql, [params[:rental_location_id]])
+      Infraestructure::Query.run(sql, params[:rental_location_id])
 
     end
   end
