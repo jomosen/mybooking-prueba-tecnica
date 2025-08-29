@@ -48,7 +48,7 @@ module Service
               )
                 result[:skipped] += 1
                 result[:processed] += 1
-                result[:warnings] << { item_index: result[:item_index], code: :units_not_allowed, detail: "Units #{price_attributes[:units]} not allowed for time_measurement #{price_attributes[:time_measurement]}" }
+                result[:warnings] << { item_index: result[:item_index], code: :units_not_allowed, detail: "Units #{price_attributes[:units]} not present in the price definition." }
                 next
               end
 
