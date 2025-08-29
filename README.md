@@ -1,3 +1,132 @@
+
+
+
+# Solución a la prueba técnica
+
+## Descripción
+
+Aplicación desarrollada para la gestión de precios (listado e importación) siguiendo la arquitectura dada en la prueba técnica.
+Se ha priorizado el uso de buenas prácticas:
+
+- Responsabilidad única en los módulos.
+
+- Desacoplamiento entre componentes.
+
+- Código limpio y legible.
+
+El proyecto está dockerizado, lo que facilita:
+
+- Montar un entorno reproducible en cualquier máquina.
+
+- Evitar problemas de dependencias locales.
+
+- Simplificar el despliegue y la ejecución de la aplicación.
+
+## Estructura del proyecto
+
+- controller/ → controladores HTTP.
+
+- service/ → servicios de aplicación (ej. importación, validadores, policies).
+
+- use_case/ → casos de uso principales.
+
+- dto/ → objetos de transferencia de datos.
+
+- policy/ → políticas de validación (ej. unidades permitidas).
+
+- presenter/ → formateo de datos para UI.
+
+- decorator/ → formateo de resultados (ej. resumen de importación).
+
+## Tarea 1 – Listado de precios
+### Validaciones
+
+Solo se permite listar precios si se han seleccionado todos los filtros obligatorios:
+
+- Sucursal (rental_location)
+
+- Tipo de tarifa (rate_type)
+
+- Duración (time_measurement)
+
+**Motivo: garantizar datos consistentes.**
+
+Si no, aparecerían categorías duplicadas con precios de distintas temporadas y el usuario podría percibirlo como un error.
+
+Una vez aplicados los filtros, si se filtra de nuevo, cada desplegable actualizado refresca el desplegable inmediatamente después, asegurando coherencia entre opciones.
+
+**Validación adicional: si se selecciona un grupo de temporadas, se obliga a elegir también la temporada concreta.**
+
+## Presentación
+
+Se desarrolló un presenter (ListPricesPivotPresenter) que transforma los precios en formato de tabla pivotada, perfecto para representar directamente la información en la UI.
+
+## Tarea 2 – Importación de precios
+
+### Flujo
+
+- La importación se implementa mediante subida de fichero CSV a un endpoint REST.
+
+- El endpoint recibe el archivo y lo pasa al use case con su servicio correspondiente.
+
+## Contrato y desacoplamiento
+
+- Se definió un contrato (ImportDataSource) para desacoplar la fuente de datos del caso de uso.
+
+- Implementación concreta: CsvDataSource.
+
+- Beneficio: permite cambiar o ampliar la fuente de datos en el futuro (ej. JSON, API).
+
+## Decorador
+
+Se creó un decorador (ImportResultDecorator) para formatear el resultado de la importación y mostrar al usuario un resumen claro:
+
+- Estado (éxito/abortado).
+
+- Última fila procesada.
+
+- Totales, advertencias y errores.
+
+## Validaciones en la importación
+
+- Si el valor de unidades no coincide con ninguna opción de la definición de precio, el registro se omite mediante un validador.
+
+**Se decidió no reutilizar los mismos filtros de la tarea 1.**
+
+Para importar, se utilizan: sucursal, tipo de tarifa y temporada.
+
+Esto permite definir precios de múltiples combinaciones en una sola importación.
+
+## Persistencia
+
+Se implementó un upsert para la persistencia de precios.
+
+- Rendimiento: evita un SELECT previo antes del insert/update.
+
+- Atomicidad: la DB resuelve inserción/actualización de forma segura, evitando condiciones de carrera.
+
+## Bug detectado en el dump
+
+- En el dump original, los valores de time_measurement no eran correctos:
+
+- El enum definido era (months, days, hours, minutes).
+
+- Para days el índice correcto era 1.
+
+- En el dump aparecía 2 (que corresponde a hours).
+
+- La prueba especificaba que solo debía haber precios definidos para days.
+
+**Decisión: corregir el dump en lugar de cambiar el enum o el código, asegurando que la aplicación fuera funcional y consistente con los requisitos.**
+
+Posibles mejoras futuras
+
+- Añadir tests automáticos (unitarios e integración) para garantizar robustez.
+
+- Otras fuentes de importación.
+
+<img width="1420" height="1225" alt="imagen" src="https://github.com/user-attachments/assets/f722e794-f717-4dd1-92b7-91cb01dcdead" />
+
 # Mybooking - Interview test
 
 ## Prerequesites
