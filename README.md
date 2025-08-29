@@ -26,13 +26,13 @@ El proyecto está dockerizado, lo que facilita:
 
 - controller/ → controladores HTTP.
 
-- service/ → servicios de aplicación (ej. importación, validadores, policies).
+- service/ → servicios de aplicación.
 
 - use_case/ → casos de uso principales.
 
 - dto/ → objetos de transferencia de datos.
 
-- policy/ → políticas de validación (ej. unidades permitidas).
+- policy/ → políticas de validación (ej. unidades permitidas según una definición de precio).
 
 - presenter/ → formateo de datos para UI.
 
@@ -41,13 +41,7 @@ El proyecto está dockerizado, lo que facilita:
 ## Tarea 1 – Listado de precios
 ### Validaciones
 
-Solo se permite listar precios si se han seleccionado todos los filtros obligatorios:
-
-- Sucursal (rental_location)
-
-- Tipo de tarifa (rate_type)
-
-- Duración (time_measurement)
+Solo se permite listar precios si se han seleccionado todos los filtros obligatorios: Sucursal (rental_location), Tipo de tarifa (rate_type) y Duración (time_measurement).
 
 **Motivo: garantizar datos consistentes.**
 
@@ -67,19 +61,23 @@ Se desarrolló un presenter (ListPricesPivotPresenter) que transforma los precio
 
 No lo plantearía siguiendo los filtros aunque a nivel conceptual pueda parecer coherente por compartir el mismo esquema. El problema es que hay que indicar a qué combinación concreta pertenece cada precio. He optado por añadir las columnas de sucursal, tipo de tarifa y temporada. Esto permite que en un mismo fichero CSV se definan precios para distintas sucursales, tarifas y temporadas. Además, evita tener que importar varias veces para cubrir todas las combinaciones.
 
+**Archivo CSV de ejemplo: https://raw.githubusercontent.com/jomosen/mybooking-prueba-tecnica/refs/heads/master/mybooking_price_import.csv**
+
 ### Flujo
 
-- La importación se implementa mediante subida de fichero CSV a un endpoint REST.
+- La importación se implementa mediante subida de fichero CSV.
 
-- El endpoint recibe el archivo y lo pasa al use case con su servicio correspondiente.
+- El controlador recibe el archivo y lo pasa al use case para que lo orqueste todo.
 
-## Contrato y desacoplamiento
+- Se devuelve un sumario del resultado de la importación.
+
+## Fuente de datos
 
 - Se definió un contrato (ImportDataSource) para desacoplar la fuente de datos del caso de uso.
 
 - Implementación concreta: CsvDataSource.
 
-- Beneficio: permite cambiar o ampliar la fuente de datos en el futuro (ej. JSON, API).
+Esto permite cambiar o ampliar la fuente de datos en el futuro.
 
 ## Decorador
 
@@ -91,9 +89,14 @@ Se creó un decorador (ImportResultDecorator) para formatear el resultado de la 
 
 - Totales, advertencias y errores.
 
+<img width="508" height="418" alt="imagen" src="https://github.com/user-attachments/assets/7a3f7f40-e1bb-459c-a948-9aa3036cf3fe" />
+
+
 ## Validaciones en la importación
 
-- Si el valor de unidades no coincide con ninguna opción de la definición de precio, el registro se omite mediante un validador.
+- Se valida que los datos se hayan introducido en el orden correcto. Por ejemplo, en el caso del csv se comprueba que las cabeceras siguen el esquema esperado.
+- Si un precio no tiene temporada, en el csv viene como cadena vacía y se mapea como nulo.
+- Si el valor de unidades no coincide con ninguna opción de la definición de precio, el precio se omite. Para ello se ha implementado una clase pequeña que encapsula una regla de negocio concreta y aislada (AllowdUnitsPolicy).
 
 ## Persistencia
 
@@ -101,11 +104,11 @@ Se implementó un upsert para la persistencia de precios.
 
 - Rendimiento: evita un SELECT previo antes del insert/update.
 
-- Atomicidad: la DB resuelve inserción/actualización de forma segura, evitando condiciones de carrera.
+- Atomicidad: la DB resuelve inserción/actualización de forma segura, evitando condiciones de carrera (por ejemplo más de un usuario importando al mismo tiempo).
 
 ## Bug detectado en el dump
 
-- En el dump original, los valores de time_measurement no eran correctos:
+En el dump original, los valores de time_measurement no eran correctos:
 
 - El enum definido era (months, days, hours, minutes).
 
@@ -120,6 +123,8 @@ Se implementó un upsert para la persistencia de precios.
 Posibles mejoras futuras
 
 - Añadir tests automáticos (unitarios e integración) para garantizar robustez.
+
+- Mejorar la arquitectura de la aplicación.
 
 - Otras fuentes de importación.
 
