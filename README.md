@@ -89,6 +89,9 @@ Se creó un decorador (ImportResultDecorator) para formatear el resultado de la 
 
 - Totales, advertencias y errores.
 
+<img width="508" height="418" alt="imagen" src="https://github.com/user-attachments/assets/7a3f7f40-e1bb-459c-a948-9aa3036cf3fe" />
+
+
 ## Validaciones en la importación
 
 - Se valida que los datos se hayan introducido en el orden correcto. Por ejemplo, en el caso del csv se comprueba que las cabeceras siguen el esquema esperado.
