@@ -2,10 +2,13 @@ module UseCase
     
   class ListPricesUseCase
 
+    include UseCase::Helper::ValidationHelper
+
     Result = Struct.new(:success?, :authorized?, :data, :message, keyword_init: true)
 
-    def initialize(service, logger)
+    def initialize(service, time_measurement_mapper, logger)
       @service = service
+      @time_measurement_mapper = time_measurement_mapper
       @logger = logger
     end
 
@@ -28,43 +31,47 @@ module UseCase
 
       # Return the result
       return Result.new(success?: true, authorized?: true, data: data)
-
     end
 
     private
 
     def load_data(params)
-
       @service.retrieve(params)
-
     end
 
-    #
-    # Process the parameters
-    #
-    # @return [Hash]
-    #
     def process_params(params)
-
-      Integer(params[:rental_location_id]) rescue return { valid: false, authorized: true, message: 'invalid rental_location_id' }
-      Integer(params[:rate_type_id]) rescue return { valid: false, authorized: true, message: 'invalid rate_type_id' }
-      Integer(params[:time_measurement]) rescue return { valid: false, authorized: true, message: 'invalid time_measurement' }
-
-      params[:season_definition_id] = params[:season_definition_id].presence
-      params[:season_id] = params[:season_id].presence
-
-      if ! params[:season_definition_id].nil?
-        Integer(params[:season_definition_id]) rescue return { valid: false, authorized: true, message: 'invalid season_definition_id' }
-
-        if params[:season_id].nil?
-          return { valid: false, authorized: true, message: 'season_id is required when season_definition_id is present' }
-        end
-        Integer(params[:season_id]) rescue return { valid: false, authorized: true, message: 'invalid season_id' }
-
+      begin
+        params[:rental_location_id] = validate_integer!(params[:rental_location_id], "invalid rental_location_id")
+        params[:rate_type_id] = validate_integer!(params[:rate_type_id], "invalid rate_type_id")
+        params[:time_measurement] = validate_time_measurement!(params[:time_measurement])
+        params[:season_definition_id], params[:season_id] = validate_season(params[:season_definition_id], params[:season_id])
+        
+        { valid: true, authorized: true }
+      rescue Error::ValidationError => e
+        { valid: false, authorized: true, message: e.message } 
       end
+    end
+    
+    # Valdia time_measurement y lo pasa a entero para persistir
+    def validate_time_measurement!(time_measurement)
+      time_measurement = @time_measurement_mapper.to_db(time_measurement)
+      raise Error::ValidationError, "invalid time_measurement" if time_measurement.nil?
 
-      return { valid: true, authorized: true }
+      time_measurement
+    end
 
+    # Valida la temporada teniendo en cuenta los dos datos que la componen y que deben estar los dos o ninguno
+    def validate_season(season_definition_id, season_id)
+      season_definition_id = season_definition_id.presence
+      season_id = season_id.presence
+
+      if season_definition_id
+        validate_integer!(season_definition_id, "invalid season_definition_id")
+        raise Error::ValidationError, "season_id is required when season_definition_id is present" if season_id.nil?
+        validate_integer!(season_id, "invalid season_id")
+      end
+      
+      [season_definition_id, season_id]
     end
 
   end
