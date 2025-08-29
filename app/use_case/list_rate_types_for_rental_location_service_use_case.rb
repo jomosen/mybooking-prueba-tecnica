@@ -2,6 +2,8 @@ module UseCase
     
   class ListRateTypesForRentalLocationServiceUseCase
 
+    include UseCase::Helper::ValidationHelper
+
     Result = Struct.new(:success?, :authorized?, :data, :message, keyword_init: true)
 
     def initialize(service, logger)
@@ -28,28 +30,22 @@ module UseCase
 
       # Return the result
       return Result.new(success?: true, authorized?: true, data: data)
-
     end
 
     private
 
     def load_data(params)
-
       @service.retrieve(params)
-
     end
 
-    #
-    # Process the parameters
-    #
-    # @return [Hash]
-    #
     def process_params(params)
-
-      Integer(params[:rental_location_id]) rescue return { valid: false, authorized: true, message: 'invalid rental_location_id' }
-
-      return { valid: true, authorized: true }
-
+      
+      begin
+        params[:rental_location_id] = validate_integer!(params[:rental_location_id], "invalid rental_location_id")
+        { valid: true, authorized: true }
+      rescue Error::ValidationError => e
+        { valid: false, authorized: true, message: e.message } 
+      end
     end
 
   end
