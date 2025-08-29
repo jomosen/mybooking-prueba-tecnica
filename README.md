@@ -63,6 +63,10 @@ Se desarrolló un presenter (ListPricesPivotPresenter) que transforma los precio
 
 ## Tarea 2 – Importación de precios
 
+**Respuesta a la pregunta: ¿Planterías la importación siguiendo estos filtros o añadirías las columnas de sucursal, tipo de tarifa y temporada?**
+
+No lo plantearía siguiendo los filtros aunque a nivel conceptual pueda parecer coherente por compartir el mismo esquema. El problema es que hay que indicar a qué combinación concreta pertenece cada precio. He optado por añadir las columnas de sucursal, tipo de tarifa y temporada. Esto permite que en un mismo fichero CSV se definan precios para distintas sucursales, tarifas y temporadas. Además, evita tener que importar varias veces para cubrir todas las combinaciones.
+
 ### Flujo
 
 - La importación se implementa mediante subida de fichero CSV a un endpoint REST.
@@ -90,12 +94,6 @@ Se creó un decorador (ImportResultDecorator) para formatear el resultado de la 
 ## Validaciones en la importación
 
 - Si el valor de unidades no coincide con ninguna opción de la definición de precio, el registro se omite mediante un validador.
-
-**Se decidió no reutilizar los mismos filtros de la tarea 1.**
-
-Para importar, se utilizan: sucursal, tipo de tarifa y temporada.
-
-Esto permite definir precios de múltiples combinaciones en una sola importación.
 
 ## Persistencia
 
